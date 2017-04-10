@@ -26840,10 +26840,12 @@
                     "type": "string"
                 },
                 "default_caller_id_name": {
+                    "default": "anonymous",
                     "description": "kazoo_endpoint default caller id name",
                     "type": "string"
                 },
                 "default_caller_id_number": {
+                    "default": "0000000000",
                     "description": "kazoo_endpoint default caller id number",
                     "type": "string"
                 },
@@ -29218,6 +29220,7 @@
             "description": "Schema for trunkstore system_config",
             "properties": {
                 "default_caller_id_number": {
+                    "default": "0000000000",
                     "description": "trunkstore default caller id number",
                     "type": "string"
                 },
