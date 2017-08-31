@@ -81,7 +81,7 @@ call_waiting(AccountId, QueueId, CallId, CallerIdName, CallerIdNumber, CallerPri
              ,{<<"Caller-Priority">>, CallerPriority}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_call_waiting/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_call_waiting/1).
 
 -spec call_abandoned(ne_binary(), ne_binary(), ne_binary(), ne_binary()) -> 'ok' | {'error', any()}.
 call_abandoned(AccountId, QueueId, CallId, Reason) ->
@@ -93,7 +93,7 @@ call_abandoned(AccountId, QueueId, CallId, Reason) ->
              ,{<<"Abandon-Timestamp">>, kz_time:current_tstamp()}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_call_abandoned/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_call_abandoned/1).
 
 -spec call_handled(ne_binary(), ne_binary(), ne_binary(), ne_binary()) -> 'ok' | {'error', any()}.
 call_handled(AccountId, QueueId, CallId, AgentId) ->
@@ -105,7 +105,7 @@ call_handled(AccountId, QueueId, CallId, AgentId) ->
              ,{<<"Handled-Timestamp">>, kz_time:current_tstamp()}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_call_handled/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_call_handled/1).
 
 -spec call_missed(ne_binary(), ne_binary(), ne_binary(), ne_binary(), ne_binary()) -> 'ok' | {'error', any()}.
 call_missed(AccountId, QueueId, AgentId, CallId, ErrReason) ->
@@ -118,7 +118,7 @@ call_missed(AccountId, QueueId, AgentId, CallId, ErrReason) ->
              ,{<<"Miss-Timestamp">>, kz_time:current_tstamp()}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_call_missed/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_call_missed/1).
 
 -spec call_processed(ne_binary(), ne_binary(), ne_binary(), ne_binary(), ne_binary()) -> 'ok' | {'error', any()}.
 call_processed(AccountId, QueueId, AgentId, CallId, Initiator) ->
@@ -131,7 +131,7 @@ call_processed(AccountId, QueueId, AgentId, CallId, Initiator) ->
              ,{<<"Hung-Up-By">>, Initiator}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_call_processed/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_call_processed/1).
 
 -spec agent_ready(ne_binary(), ne_binary()) -> 'ok' | {'error', any()}.
 agent_ready(AcctId, AgentId) ->
@@ -142,7 +142,7 @@ agent_ready(AcctId, AgentId) ->
              ,{<<"Status">>, <<"ready">>}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_status_ready/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_status_ready/1).
 
 -spec agent_logged_in(ne_binary(), ne_binary()) -> 'ok' | {'error', any()}.
 agent_logged_in(AcctId, AgentId) ->
@@ -153,7 +153,7 @@ agent_logged_in(AcctId, AgentId) ->
              ,{<<"Status">>, <<"logged_in">>}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_status_logged_in/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_status_logged_in/1).
 
 -spec agent_logged_out(ne_binary(), ne_binary()) -> 'ok' | {'error', any()}.
 agent_logged_out(AcctId, AgentId) ->
@@ -164,7 +164,7 @@ agent_logged_out(AcctId, AgentId) ->
              ,{<<"Status">>, <<"logged_out">>}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_status_logged_out/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_status_logged_out/1).
 
 -spec agent_connecting(ne_binary(), ne_binary(), ne_binary()) -> 'ok' | {'error', any()}.
 -spec agent_connecting(ne_binary(), ne_binary(), ne_binary(), api_ne_binary(), api_ne_binary()) -> 'ok' | {'error', any()}.
@@ -181,7 +181,7 @@ agent_connecting(AcctId, AgentId, CallId, CallerIDName, CallerIDNumber) ->
              ,{<<"Caller-ID-Number">>, CallerIDNumber}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_status_connecting/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_status_connecting/1).
 
 -spec agent_connected(ne_binary(), ne_binary(), ne_binary()) -> 'ok' | {'error', any()}.
 -spec agent_connected(ne_binary(), ne_binary(), ne_binary(), api_ne_binary(), api_ne_binary()) -> 'ok' | {'error', any()}.
@@ -198,7 +198,7 @@ agent_connected(AcctId, AgentId, CallId, CallerIDName, CallerIDNumber) ->
              ,{<<"Caller-ID-Number">>, CallerIDNumber}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_status_connected/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_status_connected/1).
 
 -spec agent_wrapup(ne_binary(), ne_binary(), pos_integer()) -> 'ok' | {'error', any()}.
 agent_wrapup(AcctId, AgentId, WaitTime) ->
@@ -210,7 +210,7 @@ agent_wrapup(AcctId, AgentId, WaitTime) ->
              ,{<<"Wait-Time">>, WaitTime}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_status_wrapup/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_status_wrapup/1).
 
 -spec agent_paused(ne_binary(), ne_binary(), api_pos_integer()) -> 'ok' | {'error', any()}.
 agent_paused(AcctId, AgentId, 'undefined') ->
@@ -224,7 +224,7 @@ agent_paused(AcctId, AgentId, PauseTime) ->
              ,{<<"Pause-Time">>, PauseTime}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_status_paused/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_status_paused/1).
 
 -spec agent_outbound(ne_binary(), ne_binary(), ne_binary()) -> 'ok' | {'error', any()}.
 agent_outbound(AcctId, AgentId, CallId) ->
@@ -236,7 +236,7 @@ agent_outbound(AcctId, AgentId, CallId) ->
              ,{<<"Call-ID">>, CallId}
               | kz_api:default_headers(?APP_NAME, ?APP_VERSION)
              ]),
-    kapps_util:amqp_pool_send(Prop, fun kapi_acdc_stats:publish_status_outbound/1).
+    kz_amqp_worker:cast(Prop, fun kapi_acdc_stats:publish_status_outbound/1).
 
 -spec agent_statuses() -> ne_binaries().
 agent_statuses() ->

@@ -90,7 +90,7 @@ do_publish_db(DbName, Action) ->
                                  )
         ],
     Fun = fun(P) -> kapi_conf:publish_db_update(Action, DbName, P) end,
-    kapps_util:amqp_pool_send(Props, Fun).
+    kz_amqp_worker:cast(Props, Fun).
 
 -spec publish_fields(kz_json:object()) -> kz_proplist().
 -spec publish_fields(kz_json:object(), kz_json:object()) -> kz_json:object().
