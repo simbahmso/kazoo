@@ -479,10 +479,10 @@ db_compact(DbName) ->
 %% @end
 %%--------------------------------------------------------------------
 -spec db_delete(text()) -> boolean() | data_error().
+-spec db_delete(text(), db_delete_options()) -> boolean() | data_error().
 db_delete(DbName) ->
     db_delete(DbName, []).
 
--spec db_delete(text(), db_delete_options()) -> 'ok' | data_error().
 db_delete(DbName, Options) when ?VALID_DBNAME(DbName) ->
     kzs_db:db_delete(kzs_plan:plan(DbName), DbName, Options);
 db_delete(DbName, Options) ->
