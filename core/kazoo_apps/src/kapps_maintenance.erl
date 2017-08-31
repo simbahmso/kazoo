@@ -428,7 +428,7 @@ cleanup_voicemail_media(Account) ->
 -spec cleanup_orphan_modbs() -> 'ok'.
 cleanup_orphan_modbs() ->
     AccountMODbs = kazoo_modbs:list_all('encoded'),
-    AccountIds = kapps_util:get_all_accounts('raw'),
+    AccountIds = kz_util:get_all_accounts('raw'),
     DeleteOrphaned = fun (AccountMODb) ->
                              kazoo_modb:maybe_delete(AccountMODb, AccountIds)
                      end,
@@ -475,7 +475,7 @@ get_medias(Account) ->
 -spec migrate_limits(atom() | string() | binary()) -> 'ok'.
 
 migrate_limits() ->
-    migrate_all_limits(kapps_util:get_all_accounts()).
+    migrate_all_limits(kz_util:get_all_accounts()).
 
 -spec migrate_all_limits(ne_binaries()) -> 'ok'.
 migrate_all_limits(Accounts) ->
@@ -565,7 +565,7 @@ clean_trunkstore_docs(AccountDb, [JObj|JObjs], Trunks, InboundTrunks) ->
 -spec migrate_media(atom() | string() | binary()) -> 'ok'.
 
 migrate_media() ->
-    Accounts = kapps_util:get_all_accounts(),
+    Accounts = kz_util:get_all_accounts(),
     Total = length(Accounts),
     lists:foldr(fun(A, C) -> migrate_media_fold(A, C, Total) end, 1, Accounts),
     'ok'.
@@ -607,7 +607,7 @@ migrate_media(Account) ->
 %%--------------------------------------------------------------------
 -spec ensure_aggregate_devices() -> 'ok'.
 ensure_aggregate_devices() ->
-    ensure_aggregate_devices(kapps_util:get_all_accounts()).
+    ensure_aggregate_devices(kz_util:get_all_accounts()).
 
 -spec ensure_aggregate_devices(ne_binaries()) -> 'ok'.
 ensure_aggregate_devices([]) -> 'ok';
@@ -660,7 +660,7 @@ should_remove_aggregate(AccountRealm, Device) ->
 %%--------------------------------------------------------------------
 -spec find_invalid_acccount_dbs() -> ne_binaries().
 find_invalid_acccount_dbs() ->
-    lists:foldr(fun find_invalid_acccount_dbs_fold/2, [], kapps_util:get_all_accounts()).
+    lists:foldr(fun find_invalid_acccount_dbs_fold/2, [], kz_util:get_all_accounts()).
 
 find_invalid_acccount_dbs_fold(AccountDb, Acc) ->
     AccountId = kz_util:format_account_id(AccountDb, 'raw'),
