@@ -478,7 +478,7 @@ db_compact(DbName) ->
 %% Delete a database (takes an 'encoded' DbName)
 %% @end
 %%--------------------------------------------------------------------
--spec db_delete(text()) -> 'ok' | data_error().
+-spec db_delete(text()) -> boolean() | data_error().
 db_delete(DbName) ->
     db_delete(DbName, []).
 
