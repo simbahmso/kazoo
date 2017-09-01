@@ -140,7 +140,7 @@ process_req(DataJObj) ->
                   _:_ -> <<"system alert received into ", (kz_term:to_binary(node()))/binary>>
               end,
 
-    {'ok', MasterAccountId} = kapps_util:get_master_account_id(),
+    {'ok', MasterAccountId} = kz_util:get_master_account_id(),
     Emails = teletype_util:find_addresses(kz_json:set_value(<<"account_id">>, MasterAccountId, DataJObj)
                                          ,TemplateMetaJObj
                                          ,teletype_util:mod_config_cat(id())
