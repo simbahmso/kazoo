@@ -308,7 +308,7 @@ validate_path(Context, ?PROVIDERS_PATH, Id, ?HTTP_POST) ->
 validate_path(Context, ?PROVIDERS_PATH, Id, ?HTTP_DELETE) ->
     Options = [{'key', Id}],
     case kz_datamgr:get_result_keys(cb_context:account_db(Context), ?PROVIDERS_APP_VIEW, Options) of
-        [] -> Context;
+        {'ok', []} -> Context;
         _ -> cb_context:add_system_error(<<"apps exist for provider">>, Context)
     end;
 
