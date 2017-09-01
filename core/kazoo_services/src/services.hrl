@@ -22,12 +22,14 @@
 -define(MAYBE_RESELLER_BOOKKEEPER_LOOKUP,
         kapps_config:get_is_true(?CONFIG_CAT, <<"reseller_bookkeeper_lookup">>, 'false')).
 
--define(KZ_LOOKUP_BOOKKEEPER(ResellerId),
-        kz_term:to_atom(kapps_account_config:get_global(ResellerId
+-define(KZ_LOOKUP_BOOKKEEPER(ResellerId)
+       ,kz_term:to_atom(kapps_account_config:get_global(ResellerId
                                                        ,?CONFIG_CAT
                                                        ,<<"master_account_bookkeeper">>
-                                                       ,'kz_bookkeeper_local'
-                                                       ))).
+                                                       ,<<"kz_bookkeeper_local">>
+                                                       )
+                       )
+       ).
 
 -ifdef(TEST).
 -define(A_MASTER_ACCOUNT_ID, <<"master_3dd0df9f3b3940b8a972c0e43">>).
