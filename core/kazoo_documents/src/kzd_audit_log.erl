@@ -124,7 +124,7 @@ set_audit_account(JObj, AccountId, AuditJObj) ->
 -spec save(kz_services:services(), doc(), ne_binary()) -> 'ok'.
 -spec save(kz_services:services(), doc(), ne_binary(), ne_binary()) -> 'ok'.
 save(Services, AuditLog) ->
-    {'ok', MasterAccountId} = kz_util:get_master_account_id(),
+    {'ok', MasterAccountId} = kz_config_accounts:master_account_id(),
     lager:debug("maybe save the base audit log ~s", [kz_json:encode(AuditLog)]),
     save(Services, AuditLog, MasterAccountId).
 

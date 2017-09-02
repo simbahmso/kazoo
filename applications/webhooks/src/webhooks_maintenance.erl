@@ -121,7 +121,7 @@ reset_webhooks_list() ->
     _ = kapi_maintenance:refresh_database(?KZ_WEBHOOKS_DB),
     _ = kapi_maintenance:refresh_views(?KZ_WEBHOOKS_DB),
 
-    case kz_util:get_master_account_db() of
+    case kz_config_accounts:master_account_db() of
         {'ok', MasterAccountDb} ->
             Ids = get_webhooks(MasterAccountDb),
             _ = kz_datamgr:del_docs(MasterAccountDb, Ids),

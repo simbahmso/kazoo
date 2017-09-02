@@ -215,7 +215,7 @@ delete(Context, _PlanId) ->
 -spec summary_available_fields(cb_context:context()) -> cb_context:context().
 summary_available_fields(Context) ->
     JObj = read_service_plan_editable(),
-    UIApps = kz_json:from_list(get_ui_apps(kz_util:get_master_account_id())),
+    UIApps = kz_json:from_list(get_ui_apps(kz_config_accounts:master_account_id())),
     crossbar_doc:handle_json_success(kz_json:set_value(<<"ui_apps">>, UIApps, JObj), Context).
 
 -spec read_service_plan_editable() -> kz_json:object().

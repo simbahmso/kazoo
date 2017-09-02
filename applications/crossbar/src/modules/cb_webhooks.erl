@@ -62,7 +62,7 @@ init() ->
 
 -spec init_master_account_db() -> 'ok'.
 init_master_account_db() ->
-    case kz_util:get_master_account_db() of
+    case kz_config_accounts:master_account_db() of
         {'ok', MasterAccountDb} ->
             _ = kz_datamgr:revise_doc_from_file(MasterAccountDb
                                                ,'webhooks'
@@ -84,7 +84,7 @@ maybe_revise_schema() ->
     end.
 
 maybe_revise_schema(SchemaJObj) ->
-    case kz_util:get_master_account_db() of
+    case kz_config_accounts:master_account_db() of
         {'ok', MasterDb} -> maybe_revise_schema(SchemaJObj, MasterDb);
         {'error', _E} ->
             lager:warning("master account not set yet, unable to revise schema: ~p", [_E])
@@ -428,7 +428,7 @@ fix_key_fold(Key, Envelope) ->
 -spec summary_available(cb_context:context()) ->
                                cb_context:context().
 summary_available(Context) ->
-    {'ok', MasterAccountDb} = kz_util:get_master_account_db(),
+    {'ok', MasterAccountDb} = kz_config_accounts:master_account_db(),
 
     crossbar_doc:load_view(?AVAILABLE_HOOKS
                           ,['include_docs']
