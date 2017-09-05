@@ -221,7 +221,9 @@ maybe_mark_as_complete(MigId, Account, Context) ->
             lager:info("migration ~p failed to complete", [MigId])
     end.
 
--spec mark_migration_complete(binary(), binary(), cb_context:context()) -> 'ok'.
+-spec mark_migration_complete(binary(), binary(), cb_context:context()) ->
+                                     {'ok', kz_json:object() | kz_json:objects()} |
+                                     kz_datamgr:data_error().
 mark_migration_complete(MigId, AccountId, Context) ->
     lager:info("migration ~p completed successfully on account ~p", [MigId, AccountId]),
 
@@ -249,24 +251,24 @@ mark_migration_complete(MigId, AccountId, Context) ->
 get_user_name(AccountId, UserId) ->
     case kzd_user:fetch(AccountId, UserId) of
         {'ok', UserDoc} -> kzd_user:name(UserDoc);
-        _ -> undefined
+        _ -> 'undefined'
     end.
 
 -spec maybe_create_migration_doc(binary()) -> 'ok'.
 maybe_create_migration_doc(Account) ->
     case kz_datamgr:open_cache_doc(Account, ?MIGRATIONS_DOC) of
-        {ok, _} -> ok;
+        {'ok', _} -> 'ok';
         {'error', 'not_found'} ->
             lager:info("creating migrations document for account ~p", [Account]),
             create_migration_doc(Account)
     end.
 
--spec create_migration_doc(binary()) -> kz_json:object().
+-spec create_migration_doc(binary()) -> 'ok'.
 create_migration_doc(Account) ->
     Doc = kz_json:from_list(
             [{<<"_id">>, ?MIGRATIONS_DOC}
             ,{<<"pvt_created">>, kz_time:current_tstamp()}
             ,{<<"migrations_performed">>, []}
             ]),
-    kz_datamgr:ensure_saved(Account, Doc).
-
+    {'ok', _} = kz_datamgr:ensure_saved(Account, Doc),
+    'ok'.
