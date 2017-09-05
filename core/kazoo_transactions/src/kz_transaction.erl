@@ -180,8 +180,8 @@ new(#{account_id := AccountId
 new(Ledger, Amount, Type) ->
     #kz_transaction{pvt_type = Type
                    ,pvt_amount = abs(Amount)
-                   ,pvt_account_id = kzd_account:format_account_id(Ledger)
-                   ,pvt_account_db = kzd_account:format_account_mod_id(Ledger)
+                   ,pvt_account_id = kz_term:format_account_id(Ledger)
+                   ,pvt_account_db = kz_term:format_account_mod_id(Ledger)
                    ,pvt_created = kz_time:current_tstamp()
                    ,pvt_modified = kz_time:current_tstamp()
                    }.

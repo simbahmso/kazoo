@@ -151,7 +151,7 @@ max_members_sound(Conference) ->
 
 -spec get_conference(ne_binary(), ne_binary()) -> kapps_conference:conference().
 get_conference(AccountId, ConferenceId) ->
-    {'ok', JObj} = kz_datamgr:open_cache_doc(kzd_account:format_account_db(AccountId), ConferenceId),
+    {'ok', JObj} = kz_datamgr:open_cache_doc(kz_term:format_account_db(AccountId), ConferenceId),
     kapps_conference:from_conference_doc(JObj).
 
 -spec caller_controls(ne_binary()) -> kz_json:objects().

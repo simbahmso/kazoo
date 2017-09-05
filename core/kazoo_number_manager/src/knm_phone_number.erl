@@ -319,7 +319,7 @@ split_by_assignedto(PNs) ->
                 AssignedTo = assigned_to(PN),
                 Key = case kz_term:is_empty(AssignedTo) of
                           true -> undefined;
-                          false -> kzd_account:format_account_db(AssignedTo)
+                          false -> kz_term:format_account_db(AssignedTo)
                       end,
                 M#{Key => [PN | maps:get(Key, M, [])]}
         end,
@@ -339,7 +339,7 @@ split_by_prevassignedto(PNs) ->
                           true ->
                               lager:debug("prev_assigned_to is empty for ~s, ignoring", [number(PN)]),
                               undefined;
-                          false -> kzd_account:format_account_db(PrevAssignedTo)
+                          false -> kz_term:format_account_db(PrevAssignedTo)
                       end,
                 M#{Key => [PN | maps:get(Key, M, [])]}
         end,

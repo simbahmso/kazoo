@@ -398,7 +398,7 @@ init([AccountId, AgentId, Supervisor, Props, IsThief]) ->
     {'ok'
     ,'wait'
     ,#state{account_id = AccountId
-           ,account_db = kzd_account:format_account_id(AccountId, 'encoded')
+           ,account_db = kz_term:format_account_id(AccountId, 'encoded')
            ,agent_id = AgentId
            ,statem_call_id = StateMCallId
            ,max_connect_failures = max_failures(AccountId)
