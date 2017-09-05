@@ -831,8 +831,8 @@ read_system_for_account(Context, Id, LoadFrom) ->
 
 -spec get_parent_account_id(ne_binary()) -> api_binary().
 get_parent_account_id(AccountId) ->
-    case kz_account:fetch(AccountId) of
-        {'ok', JObj} -> kz_account:parent_account_id(JObj);
+    case kzd_account:fetch(AccountId) of
+        {'ok', JObj} -> kzd_account:parent_account_id(JObj);
         {'error', _E} ->
             lager:error("failed to find parent account for ~s", [AccountId]),
             'undefined'
@@ -952,14 +952,14 @@ masquerade(Context, AccountId) ->
 -spec maybe_note_notification_preference(ne_binary(), kz_json:object()) -> 'ok'.
 maybe_note_notification_preference(Context) ->
     AccountDb = cb_context:account_db(Context),
-    case kz_account:fetch(AccountDb) of
+    case kzd_account:fetch(AccountDb) of
         {'error', _E} -> lager:debug("failed to note preference: ~p", [_E]);
         {'ok', AccountJObj} ->
             maybe_note_notification_preference(AccountDb, AccountJObj)
     end.
 
 maybe_note_notification_preference(AccountDb, AccountJObj) ->
-    case kz_account:notification_preference(AccountJObj) of
+    case kzd_account:notification_preference(AccountJObj) of
         'undefined' -> note_notification_preference(AccountDb, AccountJObj);
         <<"teletype">> -> lager:debug("account already prefers teletype");
         _Pref -> note_notification_preference(AccountDb, AccountJObj)
@@ -968,7 +968,7 @@ maybe_note_notification_preference(AccountDb, AccountJObj) ->
 -spec note_notification_preference(ne_binary(), kz_json:object()) -> 'ok'.
 note_notification_preference(AccountDb, AccountJObj) ->
     case kz_datamgr:save_doc(AccountDb
-                            ,kz_account:set_notification_preference(AccountJObj
+                            ,kzd_account:set_notification_preference(AccountJObj
                                                                    ,<<"teletype">>
                                                                    )
                             )

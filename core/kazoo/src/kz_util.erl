@@ -504,13 +504,13 @@ is_in_account_hierarchy(CheckFor, InAccount, IncludeSelf) ->
     case (IncludeSelf
           andalso AccountId =:= CheckId
          )
-        orelse kz_account:fetch(AccountId)
+        orelse kzd_account:fetch(AccountId)
     of
         'true' ->
             lager:debug("account ~s is the same as the account to fetch the hierarchy from", [CheckId]),
             'true';
         {'ok', JObj} ->
-            Tree = kz_account:tree(JObj),
+            Tree = kzd_account:tree(JObj),
             case lists:member(CheckId, Tree) of
                 'true' ->
                     lager:debug("account ~s is in the account hierarchy of ~s", [CheckId, AccountId]),
@@ -533,8 +533,8 @@ is_in_account_hierarchy(CheckFor, InAccount, IncludeSelf) ->
 -spec is_system_admin(api_binary()) -> boolean().
 is_system_admin('undefined') -> 'false';
 is_system_admin(Account) ->
-    case kz_account:fetch(Account) of
-        {'ok', JObj} -> kz_account:is_superduper_admin(JObj);
+    case kzd_account:fetch(Account) of
+        {'ok', JObj} -> kzd_account:is_superduper_admin(JObj);
         {'error', _R} ->
             lager:debug("unable to open account definition for ~s: ~p", [Account, _R]),
             'false'
@@ -552,23 +552,23 @@ is_system_admin(Account) ->
 -spec is_account_enabled(api_binary()) -> boolean().
 is_account_enabled('undefined') -> 'false';
 is_account_enabled(Account) ->
-    case kz_account:fetch(Account) of
+    case kzd_account:fetch(Account) of
         {'error', _E} ->
             lager:error("could not open account ~s", [Account]),
             'false';
         {'ok', JObj} ->
-            kz_account:is_enabled(JObj)
+            kzd_account:is_enabled(JObj)
     end.
 
 -spec is_account_expired(api_binary()) -> 'false' | {'true', gregorian_seconds()}.
 is_account_expired('undefined') -> 'false';
 is_account_expired(Account) ->
-    case kz_account:fetch(Account) of
+    case kzd_account:fetch(Account) of
         {'error', _R} ->
             lager:debug("failed to check if expired token auth, ~p", [_R]),
             'false';
         {'ok', JObj} ->
-            kz_account:is_expired(JObj)
+            kzd_account:is_expired(JObj)
     end.
 
 %%--------------------------------------------------------------------
@@ -595,7 +595,7 @@ maybe_disable_account(Account) ->
                              {'ok', kz_json:object()} |
                              {'error', any()}.
 disable_account(Account) ->
-    account_update(Account, fun kz_account:disable/1).
+    account_update(Account, fun kzd_account:disable/1).
 
 %%--------------------------------------------------------------------
 %% @public
@@ -606,7 +606,7 @@ disable_account(Account) ->
                             {'ok', kz_json:object()} |
                             {'error', any()}.
 enable_account(Account) ->
-    account_update(Account, fun kz_account:enable/1).
+    account_update(Account, fun kzd_account:enable/1).
 
 %%--------------------------------------------------------------------
 %% @public
@@ -617,7 +617,7 @@ enable_account(Account) ->
                                   {'ok', kz_json:object()} |
                                   {'error', any()}.
 set_superduper_admin(Account, IsAdmin) ->
-    account_update(Account, fun(J) -> kz_account:set_superduper_admin(J, IsAdmin) end).
+    account_update(Account, fun(J) -> kzd_account:set_superduper_admin(J, IsAdmin) end).
 
 %%--------------------------------------------------------------------
 %% @public
@@ -628,14 +628,14 @@ set_superduper_admin(Account, IsAdmin) ->
                                         {'ok', kz_json:object()} |
                                         {'error', any()}.
 set_allow_number_additions(Account, IsAllowed) ->
-    account_update(Account, fun(J) -> kz_account:set_allow_number_additions(J, IsAllowed) end).
+    account_update(Account, fun(J) -> kzd_account:set_allow_number_additions(J, IsAllowed) end).
 
 %%--------------------------------------------------------------------
 %% @private
 %% @doc
 %% @end
 %%--------------------------------------------------------------------
--spec account_update(kz_account:doc()) ->
+-spec account_update(kzd_account:doc()) ->
                             {'ok', kz_json:object()} |
                             {'error', any()}.
 -spec account_update(ne_binary(), function()) -> 'ok' | {'error', any()}.
@@ -648,7 +648,7 @@ account_update(AccountJObj) ->
     end.
 
 account_update(Account, UpdateFun) ->
-    case kz_account:fetch(Account) of
+    case kzd_account:fetch(Account) of
         {'error', _R}=E -> E;
         {'ok', AccountJObj} ->
             account_update(UpdateFun(AccountJObj))
