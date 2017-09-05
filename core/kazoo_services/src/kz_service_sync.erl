@@ -51,7 +51,7 @@ start_link() ->
 
 -spec sync(ne_binary()) -> kz_std_return().
 sync(Account) ->
-    AccountId = kz_util:format_account_id(Account, 'raw'),
+    AccountId = kzd_account:format_account_id(Account, 'raw'),
     kz_util:put_callid(<<AccountId/binary, "-sync">>),
     case kz_services:fetch_services_doc(AccountId, 'true') of
         {'error', _}=E -> E;
@@ -61,7 +61,7 @@ sync(Account) ->
 
 -spec clean(ne_binary()) -> kz_std_return().
 clean(Account) ->
-    AccountId = kz_util:format_account_id(Account),
+    AccountId = kzd_account:format_account_id(Account),
     case kz_services:fetch_services_doc(AccountId, true) of
         {'error', _}=E -> E;
         {'ok', ServicesJObj} ->

@@ -339,7 +339,7 @@ find_account_info(OldId, OldDb, 'undefined') ->
     {OldId, OldDb};
 find_account_info('undefined', _OldDb, AccountId) ->
     {AccountId
-    ,kz_util:format_account_id(AccountId, 'encoded')
+    ,kzd_account:format_account_id(AccountId, 'encoded')
     };
 find_account_info(OldId, OldDb, _AccountId) ->
     {OldId, OldDb}.
@@ -906,7 +906,7 @@ resource_type(#kapps_call{resource_type=ResourceType}) ->
 
 -spec set_account_db(ne_binary(), call()) -> call().
 set_account_db(<<_/binary>> = AccountDb, #kapps_call{}=Call) ->
-    AccountId = kz_util:format_account_id(AccountDb, 'raw'),
+    AccountId = kzd_account:format_account_id(AccountDb, 'raw'),
     set_custom_channel_var(<<"Account-ID">>, AccountId, Call#kapps_call{account_db=AccountDb
                                                                          ,account_id=AccountId
                                                                         }).
@@ -917,7 +917,7 @@ account_db(#kapps_call{account_db=AccountDb}) ->
 
 -spec set_account_id(ne_binary(), call()) -> call().
 set_account_id(<<_/binary>> = AccountId, #kapps_call{}=Call) ->
-    AccountDb = kz_util:format_account_id(AccountId, 'encoded'),
+    AccountDb = kzd_account:format_account_id(AccountId, 'encoded'),
     set_custom_channel_var(<<"Account-ID">>, AccountId, Call#kapps_call{account_db=AccountDb
                                                                          ,account_id=AccountId
                                                                         }).
