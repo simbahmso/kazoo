@@ -197,7 +197,7 @@ merge_attributes(Endpoint, Type) ->
            ,<<"call_forward">>
            ,<<"dial_plan">>
            ,<<"metaflows">>
-           ,<<"media">>
+%%           ,<<"media">>
            ,<<"language">>
            ,<<"record_call">>
            ,<<"call_recording">>
