@@ -969,8 +969,8 @@ maybe_note_notification_preference(AccountDb, AccountJObj) ->
 note_notification_preference(AccountDb, AccountJObj) ->
     case kz_datamgr:save_doc(AccountDb
                             ,kzd_account:set_notification_preference(AccountJObj
-                                                                   ,<<"teletype">>
-                                                                   )
+                                                                    ,<<"teletype">>
+                                                                    )
                             )
     of
         {'ok', UpdatedAccountJObj} ->
