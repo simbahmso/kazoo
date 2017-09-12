@@ -1,5 +1,6 @@
 {application,kazoo_data,
-             [{applications,[kazoo_amqp,kazoo_caches,kazoo_config,lager]},
+             [{applications,[kazoo,kazoo_amqp,kazoo_caches,kazoo_config,
+                             kazoo_documents,kazoo_stdlib,lager,stdlib]},
               {description,"Kazoo Data Access abstraction layer"},
               {id,"108013a5-95e7-4e18-5757-344d22bebce8"},
               {vsn,"4.0.0"},
