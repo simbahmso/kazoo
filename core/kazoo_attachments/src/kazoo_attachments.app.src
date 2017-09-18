@@ -11,5 +11,6 @@
                  , public_key
                  , lager
                  , kazoo_data
+                 , erlcloud
                  ]}
  ]}.
