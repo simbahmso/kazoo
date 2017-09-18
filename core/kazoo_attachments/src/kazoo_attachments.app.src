@@ -12,5 +12,7 @@
                  , lager
                  , kazoo_data
                  , erlcloud
+                 , erlazure
                  ]}
+ ,{mod, {kazoo_attachments_app, []}}
  ]}.
