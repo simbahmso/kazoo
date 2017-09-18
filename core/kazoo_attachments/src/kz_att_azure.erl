@@ -27,10 +27,10 @@ resolve_path(#{container := Container} = Settings, AttInfo) ->
 
 -spec azure_default_fields() -> kz_proplist().
 azure_default_fields() ->
-    [[{arg, <<"id">>}
-     ,<<"_">>
-     ,{arg, <<"attachment">>}
-     ]
+    [{group, [{arg, <<"id">>}
+             ,<<"_">>
+             ,{arg, <<"attachment">>}
+             ]}
     ].
 
 -spec azure_format_url(map(), attachment_info()) -> ne_binary().
@@ -46,12 +46,12 @@ azure_pid(Account, Key) ->
             case kz_att_azure_sup:start_azure(Account, Key) of
                 {ok, Pid} -> Pid;
                 {error,{already_started,Pid}} -> Pid
-            end;        
+            end;
         Pid -> Pid
     end.
 
 -spec put_attachment(kz_data:connection(), ne_binary(), ne_binary(), ne_binary(), ne_binary(), kz_data:options()) -> any().
-put_attachment(Settings, DbName, DocId, AName, Contents, _Options) ->   
+put_attachment(Settings, DbName, DocId, AName, Contents, _Options) ->
     CT = kz_mime:from_filename(AName),
 
     {Container, Name} = resolve_path(Settings, {DbName, DocId, AName}),

@@ -67,7 +67,7 @@ format_url(Params, JObj, Args, DefaultFields) ->
         Path -> list_to_binary([Path, "/", BaseUrl])
     end.
 
--spec do_format_url(kz_proplist(), kz_json:object(), kz_proplist(), ne_binary()) -> ne_binary().
+-spec do_format_url(kz_proplist(), kz_json:object(), kz_proplist(), binary()) -> ne_binary().
 do_format_url(Fields, JObj, Args, Separator) ->
     FormattedFields = lists:foldl(fun(F, Acc) ->
                                           format_url_field(JObj, Args, F, Acc)
@@ -78,9 +78,17 @@ do_format_url(Fields, JObj, Args, Separator) ->
     Reversed = lists:reverse(FormattedFields),
     kz_binary:join(Reversed, Separator).
 
-format_url_field(JObj, Args, Fields, Acc)
-  when is_list(Fields) ->
-    [do_format_url(Fields, JObj, Args, <<>>) | Acc];
+-type format_field() :: map()
+                      | {group, kz_proplist()}
+                      | {arg, ne_binary()}
+                      | {field, ne_binary()}
+                      | ne_binary().
+
+-spec format_url_field(kz_json:object(), kz_proplist(), format_field(), ne_binaries()) -> ne_binaries().
+format_url_field(JObj, Args, #{<<"group">> := Arg}, Acc) ->
+    format_url_field(JObj, Args, {group, Arg}, Acc);
+format_url_field(JObj, Args, {group, Arg}, Acc) ->
+    [do_format_url(Arg, JObj, Args, <<>>) | Acc];
 format_url_field(JObj, Args, #{<<"arg">> := Arg}, Fields) ->
     format_url_field(JObj, Args, {arg, Arg}, Fields);
 format_url_field(_JObj, Args, {arg, Arg}, Fields) ->

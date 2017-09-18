@@ -96,7 +96,7 @@ resolve_ids([Id | Ids], [Parent | _]=Acc, Authorization) ->
             end
     end.
 
--spec resolve_folder(map(), ne_binaries(), binary()) -> {list(), ne_binary()}.
+-spec resolve_folder(map(), ne_binaries(), binary()) -> ne_binaries().
 resolve_folder(Settings, PathTokens, Authorization) ->
     case maps:get(folder_id, Settings, undefined) of
         undefined ->
@@ -105,7 +105,7 @@ resolve_folder(Settings, PathTokens, Authorization) ->
         Path -> [Path]
     end.
 
--spec resolve_path(map(), attachment_info(), binary()) -> {list(), ne_binary()}.
+-spec resolve_path(map(), attachment_info(), binary()) -> {ne_binaries(), ne_binary()}.
 resolve_path(Settings, AttInfo, Authorization) ->
     Url = gdrive_format_url(Settings, AttInfo),
     PathTokens = binary:split(Url, <<"/">>, ['global', 'trim_all']),
@@ -115,10 +115,10 @@ resolve_path(Settings, AttInfo, Authorization) ->
 
 -spec gdrive_default_fields() -> kz_proplist().
 gdrive_default_fields() ->
-    [[{arg, <<"id">>}
-     ,<<"_">>
-     ,{arg, <<"attachment">>}
-     ]
+    [{group, [{arg, <<"id">>}
+             ,<<"_">>
+             ,{arg, <<"attachment">>}
+             ]}
     ].
 
 -spec gdrive_format_url(map(), attachment_info()) -> ne_binary().

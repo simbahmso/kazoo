@@ -63,10 +63,10 @@ aws_config(#{'key' := Key
 -spec aws_default_fields() -> kz_proplist().
 aws_default_fields() ->
     [{arg, <<"db">>}
-    ,[{arg, <<"id">>}
-     ,<<"_">>
-     ,{arg, <<"attachment">>}
-     ]
+    ,{group, [{arg, <<"id">>}
+             ,<<"_">>
+             ,{arg, <<"attachment">>}
+             ]}
     ].
 
 -spec aws_format_url(map(), attachment_info()) -> ne_binary().
@@ -175,10 +175,7 @@ convert_kv({<<"etag">> = K, V}) ->
     {K, binary:replace(V, <<$">>, <<>>, ['global'])};
 convert_kv(KV) -> KV.
 
--spec put_object(string() | ne_binary(), string() | ne_binary(), binary(), aws_config()) -> {ok, kz_proplist()} | {error, any()}.
-put_object(Bucket, FilePath, Contents,Config)
-  when is_binary(Bucket) ->
-    put_object(kz_term:to_list(Bucket), FilePath, Contents,Config);
+-spec put_object(string(), string() | ne_binary(), binary(), aws_config()) -> {ok, kz_proplist()} | {error, any()}.
 put_object(Bucket, FilePath, Contents,Config)
   when is_binary(FilePath) ->
     put_object(Bucket, kz_term:to_list(FilePath), Contents,Config);
@@ -196,10 +193,7 @@ put_object(Bucket, FilePath, Contents, #aws_config{s3_host=Host} = Config) ->
             {error, Reason}
     end.
 
--spec get_object(string() | ne_binary(), string() | ne_binary(), aws_config()) -> {ok, kz_proplist()} | {error, any()}.
-get_object(Bucket, FilePath, Config)
-  when is_binary(Bucket) ->
-    get_object(kz_term:to_list(Bucket), FilePath, Config);
+-spec get_object(string(), string() | ne_binary(), aws_config()) -> {ok, kz_proplist()} | {error, any()}.
 get_object(Bucket, FilePath, Config)
   when is_binary(FilePath) ->
     get_object(Bucket, kz_term:to_list(FilePath), Config);

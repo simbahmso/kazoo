@@ -30,21 +30,22 @@
 
 -spec gstorage_default_fields() -> kz_proplist().
 gstorage_default_fields() ->
-    [[{arg, <<"id">>}
-     ,<<"_">>
-     ,{arg, <<"attachment">>}
-     ]
+    [{group, [{arg, <<"id">>}
+             ,<<"_">>
+             ,{arg, <<"attachment">>}
+             ]}
     ].
 
 -spec gstorage_format_url(map(), attachment_info()) -> ne_binary().
 gstorage_format_url(Map, AttInfo) ->
     kz_att_util:format_url(Map, AttInfo, gstorage_default_fields()).
 
--spec resolve_path(map(), attachment_info()) -> {list(), ne_binary()}.
+-spec resolve_path(map(), attachment_info()) -> {ne_binary(), ne_binary()}.
 resolve_path(#{bucket := Bucket} = Settings, AttInfo) ->
     Url = gstorage_format_url(Settings, AttInfo),
     {Bucket, Url}.
 
+-spec gstorage_token(map()) -> ne_binary().
 gstorage_token(#{oauth_doc_id := TokenDocId}) ->
     {'ok', #{token := #{authorization := Authorization}}} = kz_auth_client:token_for_auth_id(TokenDocId, ?DRV_TOKEN_OPTIONS),
     Authorization;
